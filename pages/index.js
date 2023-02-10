@@ -39,15 +39,28 @@ const Home = () => {
       <div className="container">
         <div className="header">
           <div className="header-title">
-            <h1>sup, insert your headline here</h1>
+            <h1>Personal AI Tutor</h1>
           </div>
           <div className="header-subtitle">
-            <h2>insert your subtitle here</h2>
+            <h2>Tell me which topic you want to learn and I will give a brief description followed by few questions and answers for you to revise!
+                <br></br>
+                <br></br>Subject: Enter your subject
+                <br></br>Topic: Enter your topic
+                <br></br>Level: beginner / intermediate / advanced / . . .
+                <br></br>Number of questions and answers: 1 / 2 / 3 / . . .
+                <br></br>
+                <br></br>Make sure you enter the values in the same order and enter each values in a new line.
+                <br></br>For Example:
+                <br></br>Maths
+                <br></br>Algebra
+                <br></br>Beginner
+                <br></br>2
+            </h2>
           </div>
         </div>
         <div className="prompt-container">
           <textarea 
-          placeholder="start typing here" 
+          placeholder="start typing here..." 
           className="prompt-box" 
           value={userInput}
           onChange={onUserChangedText}

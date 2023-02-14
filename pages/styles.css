@@ -15,7 +15,7 @@ body {
         rgba(0, 0, 0, 0.5),
         rgba(0, 0, 0, 0.5)
       ),
-      url("../assets/background5.jfif");
+      url("../assets/background.png");
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;

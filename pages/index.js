@@ -47,14 +47,12 @@ const Home = () => {
                 <br></br>Subject: Enter your subject
                 <br></br>Topic: Enter your topic
                 <br></br>Level: beginner / intermediate / advanced / . . .
-                <br></br>Number of questions and answers: 1 / 2 / 3 / . . .
                 <br></br>
                 <br></br>Make sure you enter the values in the same order and enter each values in a new line.
                 <br></br>For Example:
                 <br></br>Maths
                 <br></br>Algebra
                 <br></br>Beginner
-                <br></br>2
             </h2>
           </div>
         </div>

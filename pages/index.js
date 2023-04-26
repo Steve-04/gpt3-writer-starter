@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
-import buildspaceLogo from '../assets/buildspace-logo.png';
+// import Image from 'next/image';
+// import buildspaceLogo from '../assets/buildspace-logo.png';
 
 const Home = () => {
   const [userInput, setUserInput] = useState('');
@@ -28,13 +28,18 @@ const Home = () => {
     setIsGenerating(false);
   }
   const onUserChangedText = (event) => {
-  // console.log(event.target.value);
-  setUserInput(event.target.value);
+    const input1 = document.getElementById('input1').value;
+    const input2 = document.getElementById('input2').value;
+    const input3 = document.getElementById('input3').value;
+    const combinedInput = input1 + ' ' + input2 + ' ' + input3;
+
+    setUserInput(combinedInput);
   };
+
   return (
     <div className="root">
       <Head>
-        <title>GPT-3 Writer | buildspace</title>
+        <title>Personal AI Tutor</title>
       </Head>
       <div className="container">
         <div className="header">
@@ -47,21 +52,36 @@ const Home = () => {
                 <br></br>Subject: Enter your subject
                 <br></br>Topic: Enter your topic
                 <br></br>Level: beginner / intermediate / advanced / . . .
-                <br></br>
+                {/* <br></br>
                 <br></br>Make sure you enter the values in the same order and enter each values in a new line.
                 <br></br>For Example:
                 <br></br>Maths
                 <br></br>Algebra
-                <br></br>Beginner
+                <br></br>Beginner */}
             </h2>
           </div>
         </div>
         <div className="prompt-container">
           <textarea 
-          placeholder="start typing here..." 
-          className="prompt-box" 
-          value={userInput}
-          onChange={onUserChangedText}
+            id="input1"
+            placeholder="subject" 
+            className="prompt-box" 
+            // value={userInput}
+            onChange={onUserChangedText}
+          />
+          <textarea 
+            id="input2"
+            placeholder="topic" 
+            className="prompt-box" 
+            // value={userInput}
+            onChange={onUserChangedText}
+          />
+          <textarea 
+            id="input3"
+            placeholder="level" 
+            className="prompt-box" 
+            // value={userInput}
+            onChange={onUserChangedText}
           />
           <div className="prompt-buttons">
           <a 

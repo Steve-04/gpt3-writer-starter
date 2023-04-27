@@ -199,6 +199,16 @@ textarea {
     color: rgba(255, 255, 255, 0.25)
 }
 
+.coffee {
+    top: 50px;
+    left: 50px;
+}
+  
+.coffee img {
+height: 60px;
+width: 217px;
+}  
+
 .generate-button {
     place-content: flex-start;
     align-items: flex-start;

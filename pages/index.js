@@ -84,28 +84,31 @@ const Home = () => {
             onChange={onUserChangedText}
           />
           <div className="prompt-buttons">
-          <a 
-            className={isGenerating ? 'generate-button loading' : 'generate-button'} 
-            onClick={callGenerateEndpoint}
-          >
-            <div className="generate">
-            {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
-            </div>
-          </a>
-        </div>
-        {apiOutput && (
-        <div className="output">
-          <div className="output-header-container">
-            <div className="output-header">
-              <h3>Output</h3>
-            </div>
+            <a className="coffee" href="https://www.buymeacoffee.com/steve004" target="_blank">
+              <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
+            </a>
+            <a 
+              className={isGenerating ? 'generate-button loading' : 'generate-button'} 
+              onClick={callGenerateEndpoint}
+            >
+              <div className="generate">
+              {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
+              </div>
+            </a>
           </div>
-          <div className="output-content">
-            <p>{apiOutput}</p>
-          </div>
+          {apiOutput && (
+            <div className="output">
+              <div className="output-header-container">
+                <div className="output-header">
+                  <h3>Output</h3>
+                </div>
+              </div>
+              <div className="output-content">
+                <p>{apiOutput}</p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-       </div>
       </div>
       {/* <div className="badge-container grow">
         <a

@@ -1,52 +1,33 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { OpenAI } from "openai-streams";
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 const basePromptPrefix = 
 `
-Write me a detailed table of contents for the given subject on the given topic for a person who is of the given level in the topic. The table of contents should contain all the important points on the given topic. The table of contents should be enough for someone preparing for a big exam.
-Subject: 
-Topic: 
+Prepare a detailed table of contents for the given subject on the given topic for a person who is of the given level in the topic. The table of contents should contain all the important points on the given topic. The table of contents should be enough for someone preparing for a big exam. Take the table of contents and generate a very detailed study material. Give a very detailed explanation for each of the topics and their sub-topics. Give the respective heading before explaining each topic. The study material should be followed by questions and answers on the given topic. At the end of the study material give resources for further learning.
+Subject:
+Topic:
 Level:
+Study material:
 `
 ;
-const generateAction = async (req, res) => {
-  // Run first prompt
-  console.log(`API: ${basePromptPrefix}${req.body.userInput}`)
 
-  const baseCompletion = await openai.createCompletion({
-    model: 'text-davinci-003',
-    prompt: `${basePromptPrefix}${req.body.userInput}`,
-    temperature: 0.8,
-    max_tokens: 500,
-  });
+export default async function handler(req) {
   
-  const basePromptOutput = baseCompletion.data.choices.pop();
+    //console.log("got here");
+    const body = await req.json();
+    //console.log(body);
+    const stream = await OpenAI(
+        "completions",
+        {
+        model: "text-davinci-003",
+        prompt: `${basePromptPrefix}${body.prompt}`,
+        temperature: 0.7,
+        max_tokens: 3000
+        }
+    );
 
-  const secondPrompt = `
-  Take the table of contents and generate a very detailed study material. Give a very detailed explanation for each of the topics and their sub-topics. Give the respective heading before explaining each topic. The study material should be followed by questions and answers on the given topic. At the end of the study material give resources for further learning.
-  Subject: ${req.body.userInput}
-  Topic: ${req.body.userInput}
-  Level: ${req.body.userInput}
-  Table of Contents: ${basePromptOutput.text}
-  Study Material:
-  `
-  ;
+    return new Response(stream);
+}
 
-  // I call the OpenAI API a second time with Prompt #2
-	const secondPromptCompletion = await openai.createCompletion({
-		model: "text-davinci-003",
-		prompt: `${secondPrompt}`,
-		temperature: 0.8,
-		max_tokens: 3000,
-	});
-
-  const secondPromptOutput = secondPromptCompletion.data.choices.pop();
-
-  res.status(200).json({ output: secondPromptOutput });
+export const config = {
+  runtime: "edge"
 };
-
-export default generateAction;

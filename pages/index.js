@@ -1,32 +1,52 @@
 import { useState } from 'react';
 import Head from 'next/head';
-// import Image from 'next/image';
-// import buildspaceLogo from '../assets/buildspace-logo.png';
 
 const Home = () => {
   const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('')
+  const [conversation, setConversation] = useState([]);
+  const [responseIndex, setResponseIndex] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false)
 
-  const callGenerateEndpoint = async () => {
+  async function stream() {
     setIsGenerating(true);
-    
-    console.log("Calling OpenAI...")
-    const response = await fetch('/api/generate', {
-      method: 'POST',
+
+    setApiOutput("");
+    const updatedConversation = [
+      ...conversation,
+      { role: "user", content: userInput },
+    ];
+    setConversation(updatedConversation);
+    setResponseIndex((prevIndex) => (prevIndex === null ? 1 : prevIndex + 2));
+  
+    //console.log("Sending!");
+    //console.log(updatedConversation);
+    const response = await fetch("/api/generate", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userInput }),
+      body: JSON.stringify({ prompt: userInput, conversation: updatedConversation }),
     });
+  
+    const data = response.body;
+    if (!data) {
+      return;
+    }
 
-    const data = await response.json();
-    const { output } = data;
-    console.log("OpenAI replied...", output.text)
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
 
-    setApiOutput(`${output.text}`);
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setApiOutput((prev) => prev + chunkValue);
+    }
     setIsGenerating(false);
   }
+
   const onUserChangedText = (event) => {
     const input1 = document.getElementById('input1').value;
     const input2 = document.getElementById('input2').value;
@@ -52,12 +72,6 @@ const Home = () => {
                 <br></br>Subject: Enter your subject
                 <br></br>Topic: Enter your topic
                 <br></br>Level: beginner / intermediate / advanced / . . .
-                {/* <br></br>
-                <br></br>Make sure you enter the values in the same order and enter each values in a new line.
-                <br></br>For Example:
-                <br></br>Maths
-                <br></br>Algebra
-                <br></br>Beginner */}
             </h2>
           </div>
         </div>
@@ -89,7 +103,7 @@ const Home = () => {
             </a>
             <a 
               className={isGenerating ? 'generate-button loading' : 'generate-button'} 
-              onClick={callGenerateEndpoint}
+              onClick={stream}
             >
               <div className="generate">
               {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
@@ -110,18 +124,6 @@ const Home = () => {
           )}
         </div>
       </div>
-      {/* <div className="badge-container grow">
-        <a
-          href="https://buildspace.so/builds/ai-writer"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div className="badge">
-            <Image src={buildspaceLogo} alt="buildspace logo" />
-            <p>build with buildspace</p>
-          </div>
-        </a>
-      </div> */}
     </div>
   );
 };

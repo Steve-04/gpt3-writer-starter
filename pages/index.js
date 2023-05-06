@@ -108,7 +108,8 @@ const Home = () => {
     const input1 = document.getElementById('input1').value;
     const input2 = document.getElementById('input2').value;
     const input3 = document.getElementById('input3').value;
-    const combinedInput = input1 + ' ' + input2 + ' ' + input3;
+    const input4 = document.getElementById('input4').value;
+    const combinedInput = input1 + ' ' + input2 + ' ' + input3 + ' ' + input4;
 
     setUserInput(combinedInput);
   };
@@ -125,10 +126,6 @@ const Home = () => {
           </div>
           <div className="header-subtitle">
             <h2>Tell me which topic you want to learn and I will give a brief description followed by few questions and answers for you to revise!
-                <br></br>
-                <br></br>Subject: Enter your subject
-                <br></br>Topic: Enter your topic
-                <br></br>Level: beginner / intermediate / advanced / . . .
             </h2>
           </div>
         </div>
@@ -150,6 +147,13 @@ const Home = () => {
           <textarea 
             id="input3"
             placeholder="level" 
+            className="prompt-box" 
+            // value={userInput}
+            onChange={onUserChangedText}
+          />
+          <textarea 
+            id="input4"
+            placeholder="language" 
             className="prompt-box" 
             // value={userInput}
             onChange={onUserChangedText}
@@ -179,7 +183,7 @@ const Home = () => {
               </div>
               <PDFDownloadLink
                 document={<MyDocument apiOutput={apiOutput} />}
-                fileName={`${document.getElementById('input1').value}_${document.getElementById('input2').value}_${document.getElementById('input3').value}`}
+                fileName={`${document.getElementById('input1').value}_${document.getElementById('input2').value}_${document.getElementById('input3').value}_${document.getElementById('input4').value}`}
               >
                 <a className='download-button'>
                   <div className="download">

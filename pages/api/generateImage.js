@@ -11,7 +11,6 @@ You are an expert in generating highly detailed prompts to generate images using
 Subject:
 Topic:
 Level:
-Language: 
 Prompts: 
 `;
 

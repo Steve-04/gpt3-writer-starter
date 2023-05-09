@@ -61,6 +61,7 @@ const MyDocument = ({ apiOutput }) => {
 const Home = () => {
   const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('')
+  const [apiOutputImage, setApiOutputImage] = useState([])
   const [conversation, setConversation] = useState([]);
   const [responseIndex, setResponseIndex] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false)
@@ -69,6 +70,7 @@ const Home = () => {
     setIsGenerating(true);
 
     setApiOutput("");
+    setApiOutputImage([]);
     const updatedConversation = [
       ...conversation,
       { role: "user", content: userInput },
@@ -101,6 +103,22 @@ const Home = () => {
       const chunkValue = decoder.decode(value);
       setApiOutput((prev) => prev + chunkValue);
     }
+    
+    const response2 = await fetch("/api/generateImage", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ userInput }),
+		});
+
+		const data2 = await response2.json();
+		const { output } = data2;
+
+    //console.log("Finally...",output);
+
+		setApiOutputImage(output);
+
     setIsGenerating(false);
   }
 
@@ -108,8 +126,8 @@ const Home = () => {
     const input1 = document.getElementById('input1').value;
     const input2 = document.getElementById('input2').value;
     const input3 = document.getElementById('input3').value;
-    const input4 = document.getElementById('input4').value;
-    const combinedInput = input1 + ' ' + input2 + ' ' + input3 + ' ' + input4;
+    // const input4 = document.getElementById('input4').value;
+    const combinedInput = input1 + ' ' + input2 + ' ' + input3;
 
     setUserInput(combinedInput);
   };
@@ -126,6 +144,10 @@ const Home = () => {
           </div>
           <div className="header-subtitle">
             <h2>Tell me which topic you want to learn and I will give a brief description followed by few questions and answers for you to revise!
+                <br></br>
+                <br></br>Subject: Enter your subject
+                <br></br>Topic: Enter your topic
+                <br></br>Level: beginner / intermediate / advanced / . . .
             </h2>
           </div>
         </div>
@@ -151,13 +173,13 @@ const Home = () => {
             // value={userInput}
             onChange={onUserChangedText}
           />
-          <textarea 
+          {/* <textarea 
             id="input4"
             placeholder="language" 
             className="prompt-box" 
             // value={userInput}
             onChange={onUserChangedText}
-          />
+          /> */}
           <div className="prompt-buttons">
             <a className="coffee" href="https://www.buymeacoffee.com/steve004" target="_blank">
               <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
@@ -181,9 +203,16 @@ const Home = () => {
               <div className="output-content">
                 <p>{apiOutput}</p>
               </div>
+              {apiOutputImage && (
+                <div className="image-section">
+                  {apiOutputImage.map((image, _index) => (
+                    <img key={_index} src={image} />
+                  ))}
+                </div>
+              )}
               <PDFDownloadLink
                 document={<MyDocument apiOutput={apiOutput} />}
-                fileName={`${document.getElementById('input1').value}_${document.getElementById('input2').value}_${document.getElementById('input3').value}_${document.getElementById('input4').value}`}
+                fileName={`${document.getElementById('input1').value}_${document.getElementById('input2').value}_${document.getElementById('input3').value}`}
               >
                 <a className='download-button'>
                   <div className="download">

@@ -489,3 +489,24 @@ width: 217px;
         transform: rotate(360deg);
     }
 }
+
+.image-section {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.image-section img {
+    margin: 10px;
+    min-width: 250px;
+    max-width: 33%;
+    flex-grow: 1;
+}
+
+@media (max-width: 556px) {
+    .image-section img {
+        max-width: 100%;
+    }
+}

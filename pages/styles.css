@@ -383,7 +383,7 @@ width: 217px;
     padding: 16px 24px;
     position: relative;
     text-decoration: none;
-    width: min-content;
+    width: 105px;
     will-change: transform;
     cursor: pointer;
 }

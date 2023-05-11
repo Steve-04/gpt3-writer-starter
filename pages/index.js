@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: "center",
+    fontFamily: 'Oswald'
   },
   text: {
     margin: 12,
@@ -47,11 +48,9 @@ const MyDocument = ({ apiOutput }) => {
       <Text style={styles.text}>
         {apiOutput}
       </Text>
-      <Text
-        style={styles.pageNumber}
-        render={({ pageNumber, totalPages }) =>
-          `${pageNumber} / ${totalPages}`
-        }
+      <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
+        `${pageNumber} / ${totalPages}`)}
+        fixed 
       />
       </Page>
     </Document>
@@ -216,7 +215,7 @@ const Home = () => {
               >
                 <a className='download-button'>
                   <div className="download">
-                    <p>Download</p>
+                    <p>Download PDF</p>
                   </div>
                 </a>
               </PDFDownloadLink>

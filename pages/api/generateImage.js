@@ -15,31 +15,30 @@ Prompts:
 `;
 
 const generateAction = async (req, res) => {
-	//console.log(`API: ${basePromptPrefix}${req.body.userInput}`);
-
-	const baseCompletion = await openai.createCompletion({
-		model: "text-davinci-003",
-		prompt: `${basePromptPrefix}${req.body.userInput}\n`,
-		temperature: 0.6,
+    
+	const baseCompletion = await openai.createChatCompletion({
+		model: "gpt-3.5-turbo",
+        messages: [{"role": "system", "content": basePromptPrefix},
+                    {"role": "user", "content": req.body.userInput}],
+		temperature: 0.5,
 		max_tokens: 1500,
 	});
 
-	const basePromptOutput = baseCompletion.data.choices.pop().text;
-    //console.log(basePromptOutput)
+	const basePromptOutput = baseCompletion.data.choices[0].message.content;
 	const myArray = basePromptOutput.split("\n");
 
     const responses = [];
 
     for (let i = 0; i < myArray.length; i++) {
-    const response = await openai.createImage({
-        prompt: myArray[i],
-        n: 1,
-        size: "1024x1024",
-    });
-    responses.push(response.data.data.pop().url);
+        if(myArray[i].length > 50){
+            const response = await openai.createImage({
+                prompt: myArray[i],
+                n: 1,
+                size: "1024x1024",
+            });
+            responses.push(response.data.data.pop().url);
+        }
     }
-
-    //console.log(responses);
 
     res.status(200).json({ output: responses });
 };

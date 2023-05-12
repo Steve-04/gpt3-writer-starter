@@ -107,14 +107,13 @@ const Home = () => {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
 			},
-			body: JSON.stringify({ userInput }),
+			body: JSON.stringify({ userInput: userInput }),
 		});
 
 		const data2 = await response2.json();
 		const { output } = data2;
-
-    //console.log("Finally...",output);
 
 		setApiOutputImage(output);
 

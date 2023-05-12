@@ -11,15 +11,15 @@ Study material:
 ;
 
 export default async function handler(req) {
-  
-    //console.log("got here");
+
     const body = await req.json();
-    //console.log(body);
+    const prompt = body.prompt;
     const stream = await OpenAI(
-        "completions",
+        "chat",
         {
-        model: "text-davinci-003",
-        prompt: `${basePromptPrefix}${body.prompt}`,
+        model: "gpt-3.5-turbo",
+        messages: [{"role": "system", "content": basePromptPrefix},
+                    {"role": "user", "content": prompt}],
         temperature: 0.5,
         max_tokens: 3000
         }

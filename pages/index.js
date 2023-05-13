@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { PDFDownloadLink, Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const styles = StyleSheet.create({
   body: {
@@ -77,8 +79,6 @@ const Home = () => {
     setConversation(updatedConversation);
     setResponseIndex((prevIndex) => (prevIndex === null ? 1 : prevIndex + 2));
   
-    //console.log("Sending!");
-    //console.log(updatedConversation);
     const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
@@ -199,7 +199,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="output-content">
-                <p>{apiOutput}</p>
+                <ReactMarkdown children={apiOutput} remarkPlugins={[remarkGfm]} />
               </div>
               {apiOutputImage && (
                 <div className="image-section">

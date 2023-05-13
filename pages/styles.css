@@ -359,6 +359,7 @@ width: 217px;
     justify-content: flex-start;
     flex-shrink: 0;
     transform: none;
+    color: #ffffff;
 }
 
 .output-content p {
@@ -367,6 +368,34 @@ width: 217px;
     white-space: pre-line;
     color: rgb(255, 255, 255);
     text-shadow: 0px 0px 2px #000000;
+}
+
+.output-content h1 {
+    color:rgb(252, 6, 6);
+}
+
+.output-content h2 {
+    color: #082ff0;
+}
+
+.output-content h3 {
+    color:rgb(234, 251, 4);
+}
+
+.output-content h4 {
+    color: #4b05ef;
+}
+
+.output-content h5 {
+    color:rgb(241, 8, 198);
+}
+
+.output-content h6 {
+    color: #f4fd05;
+}
+
+.output-content a {
+    color: rgb(207, 5, 248);
 }
 
 .download-button {

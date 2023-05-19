@@ -7,7 +7,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const basePromptPrefix = `
-You are an expert in generating highly detailed prompts to generate images using DALL-E. Go through the given subject and the given topic and give relevant prompts which will generate images in DALL-E. The prompts should be highly detailed, describing every minute details, colours, lighting, so that the generated images are highly realistic. And the prompts should be such that it will help students understand the given subject and given topic in a even better way and the prompts should be relevant only to the given subject and the given topic. You have to generate only 4 such prompts.
+You are an expert in generating highly detailed prompts to generate images using DALL-E. Go through the given subject and the given topic and give relevant prompts which will generate images in DALL-E. The prompts should be highly detailed, describing every minute details, colours, lighting, so that the generated images are highly realistic. And the prompts should be such that it will help students understand the given subject and given topic in a even better way and the prompts should be relevant only to the given subject and the given topic. You have to generate only 2 such prompts.
 Subject:
 Topic:
 Level:

@@ -3,6 +3,11 @@ import Head from 'next/head';
 import { PDFDownloadLink, Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import remarkGfm from 'remark-gfm';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {dark} from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 
 const styles = StyleSheet.create({
   body: {
@@ -202,7 +207,29 @@ const Home = () => {
                 </div>
               </div>
               <div className="output-content">
-                <ReactMarkdown children={apiOutput} remarkPlugins={[remarkGfm]} />
+                <ReactMarkdown 
+                  children={apiOutput}
+                  remarkPlugins={[remarkGfm] [remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                  components={{
+                    code({node, inline, className, children, ...props}) {
+                      const match = /language-(\w+)/.exec(className || '')
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          {...props}
+                          children={String(children).replace(/\n$/, '')}
+                          style={dark}
+                          language={match[1]}
+                          PreTag="div"
+                        />
+                      ) : (
+                        <code {...props} className={className}>
+                          {children}
+                        </code>
+                      )
+                    }
+                  }}
+                />
               </div>
               {isLoadingImages ? (
                 <div className="loading-message">Generating images...</div>

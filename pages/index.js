@@ -61,14 +61,16 @@ const MyDocument = ({ apiOutput }) => {
 
 const Home = () => {
   const [userInput, setUserInput] = useState('');
-  const [apiOutput, setApiOutput] = useState('')
-  const [apiOutputImage, setApiOutputImage] = useState([])
+  const [apiOutput, setApiOutput] = useState('');
+  const [apiOutputImage, setApiOutputImage] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [responseIndex, setResponseIndex] = useState(null);
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
 
   async function stream() {
     setIsGenerating(true);
+    setIsLoadingImages(true);
 
     setApiOutput("");
     setApiOutputImage([]);
@@ -118,6 +120,7 @@ const Home = () => {
 		setApiOutputImage(output);
 
     setIsGenerating(false);
+    setIsLoadingImages(false);
   }
 
   const onUserChangedText = (event) => {
@@ -201,7 +204,9 @@ const Home = () => {
               <div className="output-content">
                 <ReactMarkdown children={apiOutput} remarkPlugins={[remarkGfm]} />
               </div>
-              {apiOutputImage && (
+              {isLoadingImages ? (
+                <div className="loading-message">Generating images...</div>
+              ) : (
                 <div className="image-section">
                   {apiOutputImage.map((image, _index) => (
                     <img key={_index} src={image} />

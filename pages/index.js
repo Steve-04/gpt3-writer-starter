@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { PDFDownloadLink, Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -71,7 +71,27 @@ const Home = () => {
   const [conversation, setConversation] = useState([]);
   const [responseIndex, setResponseIndex] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isLoadingImages, setIsLoadingImages] = useState(true);
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
+
+  // Load data from local storage on component mount
+  useEffect(() => {
+    const storedApiOutput = localStorage.getItem('apiOutput');
+    const storedApiOutputImage = localStorage.getItem('apiOutputImage');
+
+    if (storedApiOutput) {
+      setApiOutput(storedApiOutput);
+    }
+
+    if (storedApiOutputImage) {
+      setApiOutputImage(JSON.parse(storedApiOutputImage));
+    }
+  }, []);
+
+  // Save data to local storage when apiOutput or apiOutputImage changes
+  useEffect(() => {
+    localStorage.setItem('apiOutput', apiOutput);
+    localStorage.setItem('apiOutputImage', JSON.stringify(apiOutputImage));
+  }, [apiOutput, apiOutputImage]);
 
   async function stream() {
     setIsGenerating(true);

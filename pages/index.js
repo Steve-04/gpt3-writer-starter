@@ -67,38 +67,38 @@ const MyDocument = ({ apiOutput }) => {
 const Home = () => {
   const [userInput, setUserInput] = useState("");
   const [apiOutput, setApiOutput] = useState("");
-  // const [apiOutputImage, setApiOutputImage] = useState([]);
+  const [apiOutputImage, setApiOutputImage] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [responseIndex, setResponseIndex] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  // const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
 
   // Load data from local storage on component mount
   useEffect(() => {
     const storedApiOutput = localStorage.getItem("apiOutput");
-    // const storedApiOutputImage = localStorage.getItem('apiOutputImage');
+    const storedApiOutputImage = localStorage.getItem('apiOutputImage');
 
     if (storedApiOutput) {
       setApiOutput(storedApiOutput);
     }
 
-    // if (storedApiOutputImage) {
-    //   setApiOutputImage(JSON.parse(storedApiOutputImage));
-    // }
+    if (storedApiOutputImage) {
+      setApiOutputImage(JSON.parse(storedApiOutputImage));
+    }
   }, []);
 
   // Save data to local storage when apiOutput or apiOutputImage changes
   useEffect(() => {
     localStorage.setItem("apiOutput", apiOutput);
-    // localStorage.setItem('apiOutputImage', JSON.stringify(apiOutputImage));
-  }, [apiOutput]); //[apiOutput, apiOutputImage]
+    localStorage.setItem("apiOutputImage", JSON.stringify(apiOutputImage));
+  }, [apiOutput, apiOutputImage]); //[apiOutput, apiOutputImage]
 
   async function stream() {
     setIsGenerating(true);
-    // setIsLoadingImages(true);
+    setIsLoadingImages(true);
 
     setApiOutput("");
-    // setApiOutputImage([]);
+    setApiOutputImage([]);
     const updatedConversation = [
       ...conversation,
       { role: "user", content: userInput },
@@ -133,29 +133,28 @@ const Home = () => {
       setApiOutput((prev) => prev + chunkValue);
     }
 
-    // const response2 = await fetch("/api/generateImage", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    //   },
-    //   body: JSON.stringify({ userInput: userInput }),
-    // });
+    const response2 = await fetch("/api/generateImage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({ userInput: userInput }),
+    });
 
-    // const data2 = await response2.json();
-    // const { output } = data2;
+    const data2 = await response2.json();
+    const { output } = data2;
 
-    // setApiOutputImage(output);
+    setApiOutputImage(output);
 
     setIsGenerating(false);
-    // setIsLoadingImages(false);
+    setIsLoadingImages(false);
   }
 
   const onUserChangedText = (event) => {
     const input1 = document.getElementById("input1").value;
     const input2 = document.getElementById("input2").value;
     const input3 = document.getElementById("input3").value;
-    // const input4 = document.getElementById('input4').value;
     const combinedInput = input1 + " " + input2 + " " + input3;
 
     setUserInput(combinedInput);
@@ -264,7 +263,7 @@ const Home = () => {
                   }}
                 />
               </div>
-              {/* {isLoadingImages ? (
+              {isLoadingImages ? (
                 <div className="loading-message">Generating images...</div>
               ) : (
                 <div className="image-section">
@@ -272,7 +271,7 @@ const Home = () => {
                     <img key={_index} src={image} />
                   ))}
                 </div>
-              )} */}
+              )}
               <PDFDownloadLink
                 document={<MyDocument apiOutput={apiOutput} />}
                 fileName={`${document.getElementById("input1").value}_${document.getElementById("input2").value}_${document.getElementById("input3").value}`}
